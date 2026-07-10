@@ -1,11 +1,9 @@
 import os
 from openpyxl import Workbook
+from openpyxl.styles import Font
 
 
 def generate_salary_slips(payroll_df, output_folder):
-    """
-    Generate one salary slip for each employee.
-    """
 
     os.makedirs(output_folder, exist_ok=True)
 
@@ -15,41 +13,58 @@ def generate_salary_slips(payroll_df, output_folder):
         ws = wb.active
         ws.title = "Salary Slip"
 
-        ws["A1"] = "Employee ID"
-        ws["B1"] = employee["Employee ID"]
+        # --------------------------
+        # Company Information
+        # --------------------------
 
-        ws["A2"] = "Name"
-        ws["B2"] = employee["Name"]
+        ws["A1"] = "ABC Technologies Pvt. Ltd."
+        ws["A1"].font = Font(size=16, bold=True)
 
-        ws["A3"] = "Department"
-        ws["B3"] = employee["Department"]
+        ws["A2"] = "Monthly Salary Slip"
+        ws["A2"].font = Font(size=13, bold=True)
 
+        # --------------------------
+        # Employee Information
+        # --------------------------
+
+        ws["A4"] = "Employee ID"
+        ws["B4"] = employee["Employee ID"]
+
+        ws["A5"] = "Name"
+        ws["B5"] = employee["Name"]
+
+        ws["A6"] = "Department"
+        ws["B6"] = employee["Department"]
+
+        # --------------------------
         # Payroll Information
-        ws["A5"] = "Basic Salary"
-        ws["B5"] = employee["Basic Salary"]
+        # --------------------------
 
-        ws["A6"] = "Overtime Pay"
-        ws["B6"] = employee["Overtime Pay"]
+        ws["A8"] = "Basic Salary"
+        ws["B8"] = employee["Basic Salary"]
 
-        ws["A7"] = "Bonus"
-        ws["B7"] = employee["Bonus"]
+        ws["A9"] = "Overtime Pay"
+        ws["B9"] = employee["Overtime Pay"]
 
-        ws["A8"] = "Leave Deduction"
-        ws["B8"] = employee["Leave Deduction"]
+        ws["A10"] = "Bonus"
+        ws["B10"] = employee["Bonus"]
 
-        ws["A9"] = "Tax Amount"
-        ws["B9"] = employee["Tax Amount"]
+        ws["A11"] = "Leave Deduction"
+        ws["B11"] = employee["Leave Deduction"]
 
-        ws["A10"] = "Net Salary"
-        ws["B10"] = employee["Net Salary"]
+        ws["A12"] = "Tax Amount"
+        ws["B12"] = employee["Tax Amount"]
 
-        filename = (
-            f"{employee['Employee ID']}_"
-            f"{employee['Name']}.xlsx"
-        )
+        ws["A13"] = "Net Salary"
+        ws["B13"] = employee["Net Salary"]
+
+        ws["A13"].font = Font(bold=True)
+        ws["B13"].font = Font(bold=True)
+
+        filename = f"{employee['Employee ID']}_{employee['Name']}.xlsx"
 
         filepath = os.path.join(output_folder, filename)
 
         wb.save(filepath)
 
-    print("\n✅ Salary slips generated successfully.")
+    print("✅ Salary slips generated successfully.")
