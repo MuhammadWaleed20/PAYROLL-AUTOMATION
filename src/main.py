@@ -6,17 +6,15 @@ from report import generate_payroll_report
 from salary_slip import generate_salary_slips
 from Email_sender import send_salary_slips
 from logger import setup_logger
-
-
+from excel_automation import automate_excel
 
 logger = setup_logger()
-
-
 
 EMPLOYEE_FILE = "Input/employees.xlsx"
 ATTENDANCE_FILE = "Input/attendance.xlsx"
 
 PAYROLL_REPORT = "Output/payroll_report.xlsx"
+PDF_REPORT = "Output/payroll_report.pdf"
 SALARY_SLIP_FOLDER = "Output/Salary_Slips"
 
 
@@ -40,27 +38,24 @@ def main():
             print("Program stopped.")
             return
 
-        logger.info("Employee and attendance files loaded successfully.")
-
+        logger.info("Excel files loaded successfully.")
 
         if not validate_data(employees_df, attendance_df):
             logger.error("Validation failed.")
             print("Validation Failed.")
             return
 
-        logger.info("Validation completed successfully.")
-
+        logger.info("Validation successful.")
 
         merged_df = merge_data(
             employees_df,
             attendance_df
         )
 
-        logger.info("Employee and attendance data merged.")
+        logger.info("Employee and attendance data merged successfully.")
 
         print(f"\nData merged successfully.")
         print(f"Total Employees : {len(merged_df)}")
-
 
         payroll_df = calculate_payroll(merged_df)
 
@@ -68,21 +63,19 @@ def main():
 
         print("Payroll calculated successfully.")
 
-
         generate_payroll_report(
             payroll_df,
             PAYROLL_REPORT
         )
 
-        logger.info("Payroll report generated.")
-
+        logger.info("Payroll report generated successfully.")
 
         generate_salary_slips(
             payroll_df,
             SALARY_SLIP_FOLDER
         )
 
-        logger.info("Salary slips generated.")
+        logger.info("Salary slips generated successfully.")
 
         send_salary_slips(
             payroll_df,
@@ -91,7 +84,12 @@ def main():
 
         logger.info("Salary slip emails processed.")
 
+        automate_excel(
+            PAYROLL_REPORT,
+            PDF_REPORT
+        )
 
+        logger.info("Excel automation completed successfully.")
 
         print("\nPayroll Preview\n")
 
@@ -122,7 +120,6 @@ def main():
         logger.exception(f"Unexpected Error: {e}")
 
         print(f"\nUnexpected Error: {e}")
-
 
 
 if __name__ == "__main__":
