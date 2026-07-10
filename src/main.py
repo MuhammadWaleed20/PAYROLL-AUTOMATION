@@ -1,10 +1,13 @@
 from data_load import load_data
 from validator import validate_data
 from merge import merge_data
-
+from payroll import calculate_payroll
+from report import generate_payroll_report
 
 EMPLOYEE_FILE = "Input/employees.xlsx"
 ATTENDANCE_FILE = "Input/attendance.xlsx"
+
+OUTPUT_FILE = "Output/payroll_report.xlsx"
 
 
 def main():
@@ -25,10 +28,12 @@ def main():
         attendance_df
     )
 
-    print("\nMerged Data\n")
-    print(merged_df.head())
+    payroll_df = calculate_payroll(merged_df)
 
-    print("\nTotal Employees:", len(merged_df))
+    generate_payroll_report(
+        payroll_df,
+        OUTPUT_FILE
+    )
 
 
 if __name__ == "__main__":
