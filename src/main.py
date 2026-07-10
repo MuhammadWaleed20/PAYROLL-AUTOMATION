@@ -1,5 +1,7 @@
 from data_load import load_data
 from validator import validate_data
+from merge import merge_data
+
 
 EMPLOYEE_FILE = "Input/employees.xlsx"
 ATTENDANCE_FILE = "Input/attendance.xlsx"
@@ -16,10 +18,17 @@ def main():
         return
 
     if not validate_data(employees_df, attendance_df):
-        print("\nProgram stopped due to validation errors.")
         return
 
-    print("\nData is ready for payroll processing.")
+    merged_df = merge_data(
+        employees_df,
+        attendance_df
+    )
+
+    print("\nMerged Data\n")
+    print(merged_df.head())
+
+    print("\nTotal Employees:", len(merged_df))
 
 
 if __name__ == "__main__":
